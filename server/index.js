@@ -6,6 +6,10 @@ import userRoutes from '../server/routes/user.js'; // Ensure this path is correc
 dotenv.config();
 
 const app = express();
+
+//using middleware
+app.use(express.json());
+
 const port = process.env.PORT;
 
 app.get("/", (req, res) => {
