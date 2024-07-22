@@ -72,3 +72,31 @@ export const register = TryCatch(async (req, res) => {
       message: "User Registered",
     });
   });
+
+  export const loginUser = TryCatch(async (req, res) => {
+    const {email, password} = req.body;
+
+    const user = await User.findOne({email});
+
+    if(!user)
+        return res.status(400).json({
+            message: "No User with this email",
+    });
+
+    const mathPassword = await bcrypt.compare(password, user.password);
+
+    if(!mathPassword)
+        return res.status(400).json({
+            message: "Wrong Password",  
+        });
+    
+        const token = await jwt.sign({_id: user.id}, process.env.Jwt_Sec, {
+            expiresIn: "15d",
+        });
+
+        res.json({
+            message: `Welcome back ${user.name}`,
+            token,
+            user
+        });
+  });
