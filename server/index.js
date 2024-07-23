@@ -1,7 +1,9 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import { connectDb } from './database/db.js';
-import userRoutes from '../server/routes/user.js'; // Ensure this path is correct
+import userRoutes from '../server/routes/user.js';
+import courseRoutes from '../server/routes/courses.js'; 
+import adminRoutes from '../server/routes/admin.js'; // Ensure this path is correct
 
 dotenv.config();
 
@@ -18,6 +20,10 @@ app.get("/", (req, res) => {
 
 // Using routes
 app.use("/api", userRoutes);
+
+app.use("/api", adminRoutes);
+
+app.use("/api", courseRoutes);
 
 app.listen(port, () => {
     console.log(`Server is running on port http://localhost:${port}`);
