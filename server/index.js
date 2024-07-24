@@ -18,6 +18,8 @@ app.get("/", (req, res) => {
     res.send("Server is working");
 });
 
+app.use("/uploads", express.static("uploads"));
+
 // Using routes
 app.use("/api", userRoutes);
 
