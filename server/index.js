@@ -5,6 +5,7 @@ import userRoutes from '../server/routes/user.js';
 import courseRoutes from '../server/routes/courses.js'; 
 import adminRoutes from '../server/routes/admin.js'; // Ensure this path is correct
 import Stripe from 'stripe';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -18,6 +19,8 @@ const app = express();
 
 //using middleware
 app.use(express.json());
+
+app.use(cors());
 
 const port = process.env.PORT;
 
