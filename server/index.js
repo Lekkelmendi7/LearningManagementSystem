@@ -4,8 +4,15 @@ import { connectDb } from './database/db.js';
 import userRoutes from '../server/routes/user.js';
 import courseRoutes from '../server/routes/courses.js'; 
 import adminRoutes from '../server/routes/admin.js'; // Ensure this path is correct
+import Stripe from 'stripe';
 
 dotenv.config();
+
+
+export const instance = new Stripe({
+    key_id: process.env.Stripe_PublishableKey,
+    key_secret: process.env.Stripe_Secret,
+});
 
 const app = express();
 
