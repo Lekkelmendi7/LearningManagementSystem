@@ -1,7 +1,27 @@
 import React from 'react';
-import {MdDashboard, IoMdLogOut} from 'react-icons/md';
+import {MdDashboard} from 'react-icons/md';
+import {IoMdLogOut} from 'react-icons/io'
 import './account.css';
+import {UserData} from '../../context/UserContext';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router';
+
+
 const Account = ({user}) => {
+
+    const {setIsAuth, setUser} = UserData();
+
+    const navigate = useNavigate();
+
+    const logoutHandler = () => {
+        localStorage.clear();
+        setUser([]);
+        setIsAuth(false);
+        toast.success("Logged Out");
+        navigate("/login");
+    }
+
+
   return (
     <div>
         {user && (

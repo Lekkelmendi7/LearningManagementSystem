@@ -10,12 +10,14 @@ import Footer from './components/footer/Footer';
 import About from './pages/about/About';
 import Account from './pages/account/Account';
 import { UserData } from './context/UserContext';
+import Loading from './components/loading/Loading';
+
 
 const App = () => {
-  const {isAuth, user} = UserData()
+  const {isAuth, user, loading} = UserData();
   return (
   <>
-  <BrowserRouter>
+  { loading ? ( <Loading /> ) : ( <BrowserRouter>
   <Header isAuth = {isAuth}/>
   <Routes>
     <Route path="/" element={<Home />} />
@@ -26,8 +28,10 @@ const App = () => {
     <Route path='/account' element={isAuth ? <Account user={user}/> : <Login />} />
   </Routes>
   <Footer />
-  </BrowserRouter>
-  </> 
+  </BrowserRouter> 
+  )
+  }
+  </>
   )
 }
 
