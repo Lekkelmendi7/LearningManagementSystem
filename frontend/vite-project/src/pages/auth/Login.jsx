@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './auth.css';
 import {Link, useNavigate} from 'react-router-dom';
 import { UserData } from '../../context/UserContext';
@@ -31,7 +31,7 @@ const Login = () => {
 
             </form>
             <p>
-                Don't have an account? <Link to="/register">Register</Link>
+                Dont have an account? <Link to="/register">Register</Link>
             </p>
         </div>
     </div>

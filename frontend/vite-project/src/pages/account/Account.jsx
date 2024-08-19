@@ -1,4 +1,3 @@
-import React from 'react';
 import {MdDashboard} from 'react-icons/md';
 import {IoMdLogOut} from 'react-icons/io'
 import './account.css';
@@ -36,7 +35,8 @@ const Account = ({user}) => {
                     <strong>Email - {user.email}</strong>
                 </p>
 
-                <button className='common-btn'><MdDashboard />Dashboard</button>
+                <button onClick={() => navigate(`/{user._id}/dashboard`)}
+                className='common-btn'><MdDashboard />Dashboard</button>
 
                 <br />
 

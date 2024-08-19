@@ -73,7 +73,7 @@ export const checkout = TryCatch(async (req, res) => {
     }
     const options = {
         amount: Number(course.price * 100),
-        currency: "EU",
+        currency: "usd",
     };
     
     const order = await instance.orders.create(options);

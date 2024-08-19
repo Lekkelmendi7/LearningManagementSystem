@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./coursedescription.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { CourseData } from "../../context/CourseContext";
@@ -40,24 +40,24 @@ const CourseDescription = ({ user }) => {
     );
 
     const options = {
-      key: "rzp_test_yOMeMyaj2wlvTt", // Enter the Key ID generated from the Dashboard
+      key: "pk_test_51PpXI72NaugFP1Vwxeg3QFGkkUTlPDnxClpmxPmyd7hCfSTy7dBNUbu8hbSerBn2JnZ1WwpFqReSFGrGjXd0UPAY00a0CwfV8A", // Enter the Key ID generated from the Dashboard
       amount: order.id, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-      currency: "INR",
+      currency: "USD",
       name: "E learning", //your business name
       description: "Learn with us",
       order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
 
       handler: async function (response) {
-        const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+        const { stripe_order_id, stripe_payment_id, stripe_signature } =
           response;
 
         try {
           const { data } = await axios.post(
             `${server}/api/verification/${params.id}`,
             {
-              razorpay_order_id,
-              razorpay_payment_id,
-              razorpay_signature,
+              stripe_order_id,
+              stripe_payment_id,
+              stripe_signature,
             },
             {
               headers: {
@@ -71,7 +71,7 @@ const CourseDescription = ({ user }) => {
           await fetchMyCourse();
           toast.success(data.message);
           setLoading(false);
-          navigate(`/payment-success/${razorpay_payment_id}`);
+          navigate(`/payment-success/${stripe_payment_id}`);
         } catch (error) {
           toast.error(error.response.data.message);
           setLoading(false);
@@ -81,9 +81,9 @@ const CourseDescription = ({ user }) => {
         color: "#8a4baf",
       },
     };
-    const razorpay = new window.Razorpay(options);
+  //  const razorpay = new window.Razorpay(options);
 
-    razorpay.open();
+    //razorpay.open();
   };
 
   return (
@@ -109,7 +109,7 @@ const CourseDescription = ({ user }) => {
 
               <p>{course.description}</p>
 
-              <p>Let's get started with course At ₹{course.price}</p>
+              <p>Lets get started with course At ${course.price}</p>
 
               {user && user.subscription.includes(course._id) ? (
                 <button
