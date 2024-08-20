@@ -46,7 +46,7 @@ export const fetchLecture = TryCatch(async (req, res) => {
         return res.json({lecture});
     }
 
-    if(!user.subscription.includes(req.params.id))
+    if(!user.subscription.includes(lecture.course))
         return res.status(400).json({
             message: "You didn't subscribe to this course"
         });
@@ -73,7 +73,7 @@ export const checkout = TryCatch(async (req, res) => {
     }
     const options = {
         amount: Number(course.price * 100),
-        currency: "usd",
+        currency: "USD",
     };
     
     const order = await instance.orders.create(options);
