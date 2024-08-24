@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 const AdminUsers = ({ user }) => {
   const navigate = useNavigate();
 
-  if (user && user.mainrole !== "superadmin") return navigate("/");
+  if (user && user.mainrole !== "admin") return navigate("/");
 
   const [users, setUsers] = useState([]);
 
@@ -70,7 +70,6 @@ const AdminUsers = ({ user }) => {
 
           {users &&
             users.map((e, i) => (
-              // eslint-disable-next-line react/jsx-key
               <tbody>
                 <tr>
                   <td>{i + 1}</td>
