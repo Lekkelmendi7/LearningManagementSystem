@@ -1,5 +1,4 @@
-
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./coursedescription.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { CourseData } from "../../context/CourseContext";
@@ -16,74 +15,42 @@ const CourseDescription = ({ user }) => {
   const [loading, setLoading] = useState(false);
 
   const { fetchUser } = UserData();
-
   const { fetchCourse, course, fetchCourses, fetchMyCourse } = CourseData();
 
   useEffect(() => {
     fetchCourse(params.id);
-  }, []);
+  }, [params.id]);
 
+  // Modify checkoutHandler to directly register the user to the course
   const checkoutHandler = async () => {
     const token = localStorage.getItem("token");
     setLoading(true);
 
-    const {
-      data: { order },
-    } = await axios.post(
-      `${server}/api/course/checkout/${params.id}`,
-      {},
-      {
-        headers: {
-          token,
-        },
-      }
-    );
-
-    const options = {
-      key: "pk_test_51PpXI72NaugFP1Vwxeg3QFGkkUTlPDnxClpmxPmyd7hCfSTy7dBNUbu8hbSerBn2JnZ1WwpFqReSFGrGjXd0UPAY00a0CwfV8A", // Enter the Key ID generated from the Dashboard
-      amount: order.id, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-      currency: "USD",
-      name: "E learning", //your business name
-      description: "Learn with us",
-      order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-
-      handler: async function (response) {
-        const { stripe_order_id, stripe_payment_id, stripe_signature } =
-          response;
-
-        try {
-          const { data } = await axios.post(
-            `${server}/api/verification/${params.id}`,
-            {
-              stripe_order_id,
-              stripe_payment_id,
-              stripe_signature,
-            },
-            {
-              headers: {
-                token,
-              },
-            }
-          );
-
-          await fetchUser();
-          await fetchCourses();
-          await fetchMyCourse();
-          toast.success(data.message);
-          setLoading(false);
-          navigate(`/payment-success/${stripe_payment_id}`);
-        } catch (error) {
-          toast.error(error.response.data.message);
-          setLoading(false);
+    try {
+      // Directly calling the checkout endpoint to register for the course
+      const { data } = await axios.post(
+        `${server}/api/course/checkout/${params.id}`,
+        {},
+        {
+          headers: {
+            token,
+          },
         }
-      },
-      theme: {
-        color: "#8a4baf",
-      },
-    };
-  //  const razorpay = new window.Razorpay(options);
+      );
 
-    //razorpay.open();
+      await fetchUser();
+      await fetchCourses();
+      await fetchMyCourse();
+      
+      toast.success(data.message);
+      setLoading(false);
+      
+      // After successful enrollment, navigate to course study page
+      navigate(`/course/study/${params.id}`);
+    } catch (error) {
+      toast.error(error.response?.data?.message || "An error occurred");
+      setLoading(false);
+    }
   };
 
   return (
@@ -97,7 +64,7 @@ const CourseDescription = ({ user }) => {
               <div className="course-header">
                 <img
                   src={`${server}/${course.image}`}
-                  alt=""
+                  alt="course thumbnail"
                   className="course-image"
                 />
                 <div className="course-info">
@@ -109,7 +76,7 @@ const CourseDescription = ({ user }) => {
 
               <p>{course.description}</p>
 
-              <p>Lets get started with course At ${course.price}</p>
+              <p>Start learning this course for free!</p>
 
               {user && user.subscription.includes(course._id) ? (
                 <button
@@ -120,7 +87,7 @@ const CourseDescription = ({ user }) => {
                 </button>
               ) : (
                 <button onClick={checkoutHandler} className="common-btn">
-                  Buy Now
+                  Enroll Now
                 </button>
               )}
             </div>

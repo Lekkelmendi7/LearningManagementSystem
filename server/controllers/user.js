@@ -1,9 +1,8 @@
-import { User } from '../models/User.js'
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import sendMail from '../middleware/sendMail.js'
-import TryCatch from '../middleware/TryCatch.js';
-
+import { User } from "../models/User.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import sendMail, { sendForgotMail } from "../middleware/sendMail.js";
+import TryCatch from "../middleware/TryCatch.js";
 
 export const register = TryCatch(async (req, res) => {
   const { email, name, password } = req.body;
@@ -123,7 +122,7 @@ export const forgotPassword = TryCatch(async (req, res) => {
 
   const data = { email, token };
 
-  await sendForgotMail("E learning", data);
+  await sendForgotMail("E Learning", data);
 
   user.resetPasswordExpire = Date.now() + 5 * 60 * 1000;
 

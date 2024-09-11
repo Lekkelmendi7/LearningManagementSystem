@@ -12,7 +12,6 @@ export const CourseContextProvider = ({ children }) => {
   async function fetchCourses() {
     try {
       const { data } = await axios.get(`${server}/api/course/all`);
-
       setCourses(data.courses);
     } catch (error) {
       console.log(error);
@@ -35,7 +34,6 @@ export const CourseContextProvider = ({ children }) => {
           token: localStorage.getItem("token"),
         },
       });
-
       setMyCourse(data.courses);
     } catch (error) {
       console.log(error);
@@ -46,6 +44,7 @@ export const CourseContextProvider = ({ children }) => {
     fetchCourses();
     fetchMyCourse();
   }, []);
+
   return (
     <CourseContext.Provider
       value={{

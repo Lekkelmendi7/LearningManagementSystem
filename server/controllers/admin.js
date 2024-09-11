@@ -6,6 +6,7 @@ import { promisify } from "util";
 import fs from "fs";
 import { User } from "../models/User.js";
 
+
 export const createCourse = TryCatch(async (req, res) => {
   const { title, description, category, createdBy, duration, price } = req.body;
 
@@ -117,9 +118,9 @@ export const getAllUser = TryCatch(async (req, res) => {
 });
 
 export const updateRole = TryCatch(async (req, res) => {
-  if (req.user.mainrole !== "admin")
+  if (req.user.mainrole === "admin")
     return res.status(403).json({
-      message: "This endpoint is assign to superadmin",
+      message: "Not permitted!",
     });
   const user = await User.findById(req.params.id);
 
